@@ -13,48 +13,22 @@ class SettingMeta(type):
 
     def __init__(cls, name, bases, attrs):
         cls.__LoadIni()
-        cls.__Test(cls, name)
-        #cls.__Validate(cls)
-        print('__init__', 'cls()._Setting__PathDb', cls()._Setting__PathDb)
-        print('__init__', 'cls()._Setting__GitRemote', cls()._Setting__GitRemote)
-        print('__init__', 'cls()._Setting__GithubUser', cls()._Setting__GithubUser)
-        print('__init__', 'cls().PathDb', cls().PathDb)
-        print('__init__', 'cls().GitRemote', cls().GitRemote)
-        print('__init__', 'cls().GithubUser', cls().GithubUser)
+        cls.__SetAttributes(cls, name, attrs)
+        print('__init__', cls()._Setting__PathDb)
+        print('__init__', cls()._Setting__GitRemote)
+        print('__init__', cls()._Setting__GithubUser)
+        print('__init__', cls().PathDb)
+        print('__init__', cls().GitRemote)
+        print('__init__', cls().GithubUser)
+        cls.__Validate(cls)
 
-    @classmethod
-    def __Test(cls, target, name):
-        for section in cls.config:
-            for key in cls.config[section]:
-                print('cls.config[{}][{}]={}'.format(section, key, cls.config[section][key]))
-                varName = cls.__GetVarName(name, section, key)
-                propName = cls.__GetPropName(section, key)
-                print(varName, propName)
-                setattr(target, varName, cls.config[section][key])
-                #setattr(target, '_{0}__{1}'.format(name, section + key), cls.config[section][key])
-                #setattr(target, '{0}'.format(section + key), property(lambda target: getattr(target, '_{0}__{1}'.format(name, section + key))))
-                setattr(target, propName, property(lambda target: getattr(target, varName)))
+        print('__init__', cls()._Setting__PathDb)
+        print('__init__', cls()._Setting__GitRemote)
+        print('__init__', cls()._Setting__GithubUser)
+        print('__init__', cls().PathDb)
+        print('__init__', cls().GitRemote)
+        print('__init__', cls().GithubUser)
 
-
-                """
-                setattr(target, '_{0}__{1}'.format(name, section + key), str(cls.config[section][key]))
-                #setattr(target, '_{0}__{1}'.format(name, section + key), cls.config[section][key])
-                #setattr(target, '{0}'.format(section + key), property(lambda target: getattr(target, '_{0}__{1}'.format(name, section + key))))
-                setattr(target, key, property(lambda target: getattr(target, '_{0}__{1}'.format(name, section + key))))
-
-                #setattr(target, '_{0}__{1}'.format(name, key), val) # Db.Secretプロパティ定義
-                #setattr(target, key, property(lambda target: getattr(target, '_{0}__{1}'.format(name, key))))
-
-                print(section, key, cls.config[section][key])
-        print(dir(target))
-                """
-        #print('target().db******************', target().db)
-        """
-        for attr in ['Pathdb', 'Gitremote', 'Githubuser']:
-        #for attr in ['PathDb', 'GitRemote', 'GithubUser']:
-            print('_{0}__{1}'.format(name, attr), getattr(target, '_{0}__{1}'.format(name, attr)))
-            print(attr, getattr(target, attr), getattr(target(), attr))
-        """
     @classmethod
     def __LoadIni(cls):
         configparser.ConfigParser()
@@ -105,6 +79,14 @@ class SettingMeta(type):
                 if hasattr(target, 'PathDb'): print('*', 'PathDb', target().PathDb)
                 if hasattr(target, 'GitRemote'): print('*', 'GitRemote', target().GitRemote)
                 if hasattr(target, 'GithubUser'): print('*', 'GithubUser', target().GithubUser)
+
+        """
+        for section in cls.config:
+            for key in cls.config[section]:
+                varName = cls.__GetVarName(name, section, key)
+                propName = cls.__GetPropName(section, key)
+                setattr(target, propName, property(lambda target: getattr(target, varName)))
+        """
 
         print('__SetAttributes', 'PathDb', target().PathDb)
         print('__SetAttributes', 'GitRemote', target().GitRemote)
